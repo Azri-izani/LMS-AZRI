@@ -22,7 +22,7 @@ export default function PastYearPage() {
       })
   }, [])
 
-  const years = [...new Set(items.map(i => i.year))].sort((a, b) => b - a)
+  const years = Array.from(new Set(items.map(i => i.year))).sort((a, b) => b - a)
   const filtered = filterYear === 'all' ? items : items.filter(i => i.year === Number(filterYear))
 
   if (loading) {

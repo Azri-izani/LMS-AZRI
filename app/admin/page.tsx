@@ -429,7 +429,6 @@ function PastYearPanel() {
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState({
-    year: new Date().getFullYear(), semester: 'Semester 1',
     title: '', question_pdf_url: '', answer_pdf_url: '', answer_visible: false
   })
 
@@ -449,7 +448,7 @@ function PastYearPanel() {
       body: JSON.stringify(form),
     })
     toast.success('Soalan past year berjaya ditambah!')
-    setForm({ year: new Date().getFullYear(), semester: 'Semester 1', title: '', question_pdf_url: '', answer_pdf_url: '', answer_visible: false })
+    setForm({ title: '', question_pdf_url: '', answer_pdf_url: '', answer_visible: false })
     setShowForm(false)
     load()
   }
@@ -481,22 +480,6 @@ function PastYearPanel() {
 
       {showForm && (
         <form onSubmit={handleSubmit} className="bg-blue-50 rounded-xl p-4 mb-4 space-y-3">
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="label">Tahun *</label>
-              <input type="number" className="input" value={form.year}
-                onChange={e => setForm(f => ({ ...f, year: Number(e.target.value) }))} required />
-            </div>
-            <div>
-              <label className="label">Semester *</label>
-              <select className="input" value={form.semester}
-                onChange={e => setForm(f => ({ ...f, semester: e.target.value }))}>
-                <option>Semester 1</option>
-                <option>Semester 2</option>
-                <option>Semester 3</option>
-              </select>
-            </div>
-          </div>
           <div>
             <label className="label">Tajuk *</label>
             <input className="input" placeholder="Contoh: Peperiksaan Akhir 2024"
@@ -532,7 +515,6 @@ function PastYearPanel() {
               <ClipboardList className="w-5 h-5 text-orange-500 flex-shrink-0" />
               <div className="flex-1 min-w-0">
                 <p className="font-medium text-gray-800 text-sm">{item.title}</p>
-                <p className="text-xs text-gray-500">{item.year} • {item.semester}</p>
               </div>
               <div className="flex gap-1 flex-shrink-0 flex-wrap justify-end">
                 {item.answer_pdf_url && (

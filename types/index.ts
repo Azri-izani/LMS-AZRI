@@ -39,8 +39,6 @@ export interface Video {
 
 export interface PastYear {
   id: string
-  year: number
-  semester: string
   title: string
   question_pdf_url: string
   answer_pdf_url: string | null

@@ -11,7 +11,6 @@ export default function PastYearPage() {
   const [items, setItems] = useState<PastYear[]>([])
   const [loading, setLoading] = useState(true)
   const [activePdf, setActivePdf] = useState<{ url: string; title: string } | null>(null)
-  const [filterYear, setFilterYear] = useState<string>('all')
 
   useEffect(() => {
     fetch('/api/pastyear')
@@ -21,9 +20,6 @@ export default function PastYearPage() {
         setLoading(false)
       })
   }, [])
-
-  const years = Array.from(new Set(items.map(i => i.year))).sort((a, b) => b - a)
-  const filtered = filterYear === 'all' ? items : items.filter(i => i.year === Number(filterYear))
 
   if (loading) {
     return (
@@ -52,39 +48,14 @@ export default function PastYearPage() {
       </header>
 
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-4">
-        {/* Filter by year */}
-        {years.length > 1 && (
-          <div className="flex items-center gap-2 overflow-x-auto pb-1">
-            <button
-              onClick={() => setFilterYear('all')}
-              className={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-                filterYear === 'all' ? 'bg-blue-600 text-white' : 'bg-white text-gray-600 border border-gray-200'
-              }`}
-            >
-              Semua
-            </button>
-            {years.map(year => (
-              <button
-                key={year}
-                onClick={() => setFilterYear(String(year))}
-                className={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-                  filterYear === String(year) ? 'bg-blue-600 text-white' : 'bg-white text-gray-600 border border-gray-200'
-                }`}
-              >
-                {year}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {filtered.length === 0 ? (
+        {items.length === 0 ? (
           <div className="bg-white rounded-xl p-10 text-center border border-gray-100">
             <ClipboardList className="w-10 h-10 text-gray-300 mx-auto mb-3" />
             <p className="text-gray-400">Tiada soalan past year lagi.</p>
           </div>
         ) : (
           <div className="space-y-3">
-            {filtered.map(item => (
+            {items.map(item => (
               <div key={item.id} className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 bg-orange-50 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -92,7 +63,6 @@ export default function PastYearPage() {
                   </div>
                   <div className="flex-1">
                     <p className="font-semibold text-gray-800">{item.title}</p>
-                    <p className="text-sm text-gray-500 mt-0.5">{item.year} • {item.semester}</p>
 
                     <div className="flex gap-2 mt-3 flex-wrap">
                       <button
